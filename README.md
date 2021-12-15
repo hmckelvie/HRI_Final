@@ -1,5 +1,7 @@
-# HRI_Final: Fluffy the EV3 dog
+# Comp 133 Final: Fluffy the EV3 dog
 ## Designed to teach robotics to children through exploration
+
+### By Hailey Mckelvie and Grace Melcher
 
 Fluffy is aimed at teaching students in Kindergarden through Second Grade about robotics. Children are able to learn about robotic sensors and their uses through interacting with Fluffy. Fluffy contains three different types of sensors: touch, distance, and color. The students can discover the uses of each sensor through experimenting with Fluffy and following the prompts that Fluffy gives. Students leave interactions with Fluffy with an increase knowledge of robotics, specifically how robots learn information through sensors.
 
