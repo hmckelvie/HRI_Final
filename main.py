@@ -9,11 +9,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import random
 
 
-# This program requires LEGO EV3 MicroPython v2.0 or higher.
-# Click "Open user guide" on the EV3 extension tab for more information.
-
-
-# Create your objects here.
 ev3 = EV3Brick()
 left_leg_motor = Motor(Port.D, Direction.COUNTERCLOCKWISE)
 right_leg_motor = Motor(Port.A, Direction.COUNTERCLOCKWISE)
@@ -25,6 +20,7 @@ tail_touch_sensor = TouchSensor(Port.S4)
 distance_sensor = UltrasonicSensor(Port.S2)
 
 
+''' Fluffy's introduction and gives basic instructions '''
 def intro(speaker):
     speaker.say("Hi I am Fluffy")
     wait(500)
@@ -42,11 +38,13 @@ def intro(speaker):
     wait(2000)
 
 
+''' Turns EV3 Color tyoe into a string of the color name '''
 def color_to_string(color):
     color = str(color)
     idx = color.index('.')
     return color[idx+1:]
 
+'''Tells the user Robot facts on a rotation, some of them accompany with actions'''
 def robot_fact(speaker, fact_count):
     robot_facts = [ ['Many people think of robots as machines that look and act like people',  'like C-3PO from Star Wars', 'but this is not always true!'],
                 ['Robots are controlled by computers', 'people code what they do!'],
@@ -71,17 +69,19 @@ def robot_fact(speaker, fact_count):
         speaker.say(color)
         wait(500)
         speaker.say("Sometimes I get colors wrong because my sensors aren't perfect")
-    #spin
+    #hop
     elif idx == 3:
         for chunk in robot_facts[idx]:
             speaker.say(chunk)
             wait(200)
-        #Hop
+            hop()
+            wait(200)
     else:
         for chunk in robot_facts[idx]:
             speaker.say(chunk)
             wait(200)
 
+'''rotates the dogs head up and down '''
 def move_head():
     ev3.screen.load_image(ImageFile.NEUTRAL)
     ev3.speaker.say("Look up")
@@ -96,6 +96,7 @@ def move_head():
     wait(2000)
     head_motor.stop()
 
+'''allows for the dog to hop'''
 def hop():
     #Makes the puppy hop
     ev3.screen.load_image(ImageFile.UP)
@@ -112,6 +113,7 @@ def hop():
     right_leg_motor.stop()
     ev3.screen.load_image(ImageFile.NEUTRAL)
 
+'''allows for the dog to stand up'''
 def stand_up():
     # Makes the puppy stand up.
     left_leg_motor.run_target(100, 25, wait=False)
@@ -124,6 +126,7 @@ def stand_up():
     while not left_leg_motor.control.done():
         wait(100)
 
+'''allows for the dog to sit down'''
 def sit_down():
     # Makes the puppy sit down.
     left_leg_motor.run(-50)
@@ -133,6 +136,7 @@ def sit_down():
     right_leg_motor.stop()
     wait(600)
 
+'''allows for the dog to execute a movement, which rotate'''
 def movement(speaker, move_count):
     move = move_count % 3
     if move == 0:
@@ -147,6 +151,7 @@ def movement(speaker, move_count):
     else:
         move_head()
 
+'''prompts the user to try out different sensors'''
 def prompt(speaker, prompt_count):
     num = prompt_count % 5
     if num == 0:
@@ -164,11 +169,13 @@ def prompt(speaker, prompt_count):
         wait(200)
         speaker.say("Try finding sensor and touching the sensors!")
 
+'''gives the user directions about where to find a sensor'''
 def directions(speaker):
     ev3.speaker.say("I have four sensors that you can try out")
     ev3.speaker.say("Look at the button on my tail")
     ev3.speaker.say("Press the center button again if you want more help")
 
+'''plays song clips on a rotation'''
 def play_song(speaker, song_count):
     song = song_count % 6
     if song == 0:
@@ -184,6 +191,7 @@ def play_song(speaker, song_count):
     elif song == 5:
         speaker.play_file('Spongebob.wav')
     
+'''displays says some words, different faces, and makes fitting sounds on rotation'''
 def display_face(screen, speaker, face_count):
     face = face_count % 4
     if face == 0:
@@ -225,8 +233,11 @@ song_count = 0
 prompt_count = 0
 face_count = 0
 starting_light = color_sensor.reflection()
+'''controls what state the dog is in, switches states based upon sensor readings each state allows for the
+   dog to perform a different action'''
 while True:
     rand_prompt = random.randint(1,10)
+    '''robot fact state'''
     if tail_touch_sensor.pressed():
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
@@ -234,6 +245,7 @@ while True:
         
         robot_fact(ev3.speaker, robot_fact_count)
         robot_fact_count +=1
+    '''movement state'''
     elif pet_touch_sensor.pressed():
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
@@ -241,6 +253,7 @@ while True:
 
         movement(ev3.speaker, move_count)
         move_count += 1
+    '''song state'''
     elif distance_sensor.distance() < 200:
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
@@ -248,6 +261,7 @@ while True:
 
         play_song(ev3.speaker, song_count)
         song_count +=1
+    '''display face state'''
     elif abs(starting_light - color_sensor.reflection()) > 15:
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
@@ -255,15 +269,18 @@ while True:
 
         display_face(ev3.screen, ev3.speaker, face_count)
         face_count += 1
+    '''direction state'''
     elif (ev3.buttons.pressed() == Button.CENTER):
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
         
         directions()
+    '''exit interaction'''
     elif (ev3.buttons.pressed() == Button.UP) | (ev3.buttons.pressed() == Button.DOWN)  \
        | (ev3.buttons.pressed() == Button.LEFT) | (ev3.buttons.pressed() == Button.RIGHT):
         break
+    '''prompt user to enter a state'''
     elif rand_prompt < 3:
         prompt(ev3.speaker, prompt_count)
         prompt_count +=1
