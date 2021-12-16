@@ -237,51 +237,43 @@ starting_light = color_sensor.reflection()
    dog to perform a different action'''
 while True:
     rand_prompt = random.randint(1,10)
-    '''robot fact state'''
-    if tail_touch_sensor.pressed():
+    if tail_touch_sensor.pressed():                                                             #robot fact state
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
         
         robot_fact(ev3.speaker, robot_fact_count)
         robot_fact_count +=1
-    '''movement state'''
-    elif pet_touch_sensor.pressed():
+    elif pet_touch_sensor.pressed():                                                             #movement state
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
 
         movement(ev3.speaker, move_count)
         move_count += 1
-    '''song state'''
-    elif distance_sensor.distance() < 200:
+    elif distance_sensor.distance() < 200:                                                       #song state
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
 
         play_song(ev3.speaker, song_count)
         song_count +=1
-    '''display face state'''
-    elif abs(starting_light - color_sensor.reflection()) > 15:
+    elif abs(starting_light - color_sensor.reflection()) > 15:                                   #display face state
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
 
         display_face(ev3.screen, ev3.speaker, face_count)
         face_count += 1
-    '''direction state'''
-    elif (ev3.buttons.pressed() == Button.CENTER):
+    elif (ev3.buttons.pressed() == Button.CENTER):                                                #direction state
         ev3.screen.load_image(ImageFile.NEUTRAL)
         wait(500)
         ev3.screen.load_image(ImageFile.DOWN)
-        
         directions()
-    '''exit interaction'''
     elif (ev3.buttons.pressed() == Button.UP) | (ev3.buttons.pressed() == Button.DOWN)  \
-       | (ev3.buttons.pressed() == Button.LEFT) | (ev3.buttons.pressed() == Button.RIGHT):
+       | (ev3.buttons.pressed() == Button.LEFT) | (ev3.buttons.pressed() == Button.RIGHT):        #exit interaction
         break
-    '''prompt user to enter a state'''
-    elif rand_prompt < 3:
+    elif rand_prompt < 3:                                                                         #prompt user to enter a state
         prompt(ev3.speaker, prompt_count)
         prompt_count +=1
     wait(2000)
