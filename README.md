@@ -7,6 +7,6 @@ Fluffy is aimed at teaching students in Kindergarten through Second Grade about 
 
 The state diagram of Fluffy can be viewed in HRI_robot_interaction_flow.png. 	
 
-Fluffy is intended to be open source and accessible. All materials used to build Fluffy are in Lego's EV3 robotics kit, and the code to run Fluffy is publically available. The architecture of Fluffy is adapted from the EV3 Puppy to include the ultrasonic sensor on the upper left side. 
+Fluffy is intended to be open source and accessible. All materials used to build Fluffy are in Lego's EV3 robotics kit, and the code to run Fluffy is publically available. The architecture of Fluffy is adapted from the EV3 Puppy to include the ultrasonic sensor on the upper left side and a touch sensor as its back tail, replacing the prevous rotating ball tail. 
 
 Disclamer: we do not have liscense to the songs included
